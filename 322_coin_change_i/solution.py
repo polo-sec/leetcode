@@ -24,6 +24,8 @@ class Solution:
                 # Use the smallest value out of the current minimum coins, and the new number of coins
                 if num_coins != -1:
                     min_coins = min(min_coins, num_coins + 1)
+            else:
+                print(f"Invalid coin {coin} for amount {amount}")
         
         # If no valid solution is found, set min_coins to -1
         if min_coins != float('inf'):
