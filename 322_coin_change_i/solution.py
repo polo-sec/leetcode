@@ -1,51 +1,35 @@
 class Solution:
     def coinChange(self, coins: list[int], amount: int) -> int:
 
-        coins = [0] + coins
-
-        print(coins)
-
-        dpt = []
-
-        # Iterate over the y axis of the table, each coin to be used
-        for y in range(len(coins)):
-
-            dpr = [0] * (amount + 1)
-
-            print(f"Coin: {coins[y]}")
-
-            # Iterate overthe x axis of the table, the amount to solve
-            for x in range(amount+1):
-                print(f"Amount: {x}")
-
-                # Zero Case
-                if coins[y] == 0:
-                    if x == 0:
-                        dpr[x] = 1
-                    else:
-                        dpr[x] = 0
-
-                # Logic Case
-                else:
-
-                    # Exclude Curent Coin
-                    print(f"Exclude: {dpt[y-1][x]}")
-                    exclude = dpt[y-1][x]
-
-                    # Include Current Coin
-                    if x - coins[y] < 0:
-                        print(f"Invalid Calc: {x} - {coins[y]} = {x - coins[y]}")
-                        dpr[x] = exclude
-                    else:
-                        subtraction = x - coins[y]
-                        print(f"Valid Calc: {x} - {coins[y]} = {subtraction}")
-                        dpr[x] = dpr[subtraction] + exclude
-
-
-            dpt.append(dpr)
-
-        for row in dpt:
-            print(row)
+        # Base case: if the target amount is 0, it takes 0 coins to make up
+        # This both sets our first minimum value, and also gives us a 
+        if amount == 0:
+            return 0
+        
+        # Initialize minimum number of coins to a value larger than any possible result
+        # When we iterate through each coin denomination, min_coins is updated if smaller
+        # Setting it to +int max, garuntees the first result found is smaller.
+        min_coins = float('inf')
+        
+        # Iterate through each coin denomination
+        for coin in coins:
+            if amount - coin >= 0:
+                print(f"Trying coin {coin} for amount {amount}")
+                
+                # Recursively calculate the number of coins for the remaining amount
+                num_coins = self.coinChange(coins, amount - coin)
+                print(f"Number of coins for amount {amount - coin}: {num_coins}")
+                
+                # If a valid solution is found, update the minimum number of coins
+                # Use the smallest value out of the current minimum coins, and the new number of coins
+                if num_coins != -1:
+                    min_coins = min(min_coins, num_coins + 1)
+        
+        # If no valid solution is found, set min_coins to -1
+        if min_coins != float('inf'):
+            min_coins = min_coins 
+        else:
+            min_coins = -1
 
         return min_coins
 
