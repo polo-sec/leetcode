@@ -1,0 +1,38 @@
+digraph CoinChange {
+    node [shape=box, style="rounded,filled", fillcolor="lightblue"];
+
+    Start [label="coinChangeHelper(amount)"];
+
+    Start -> BaseCase [label="amount = 0"];
+
+    BaseCase [label="Return 0"];
+
+    Start -> MemoCheck [label="amount not in coin_memo"];
+
+    MemoCheck [label="Check if target_amount is in coin_memo"];
+
+    MemoCheck -> RecursiveCalls [label="Not in coin_memo"];
+
+    RecursiveCalls [label="For each coin in coins:\n  Calculate coinChangeHelper(target_amount - coin)"];
+
+    RecursiveCalls -> ValidSolution [label="num_coins != -1"];
+
+    ValidSolution [label="Update min_coins\nmin_coins = min(min_coins, num_coins + 1)"];
+
+    ValidSolution -> MemoUpdate [label="Update coin_memo[target_amount]"];
+
+    MemoUpdate [label="Update coin_memo[target_amount] with min_coins"];
+
+    RecursiveCalls -> NoValidSolution [label="No valid solution with current coin"];
+
+    NoValidSolution [label="Continue to the next coin"];
+
+    MemoCheck -> MemoUsed [label="In coin_memo"];
+
+    MemoUsed [label="Return coin_memo[target_amount]"];
+
+    MemoCheck -> End [label="Return -1 (no valid solution)"];
+
+    End [label="Return coin_memo[amount]"];
+}
+
